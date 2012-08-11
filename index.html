@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>Field Adventures</title>
+	
+	<script src="../js/jquery.js"></script>
+	<script src="../js/crafty.js"></script>
+	<script src="js/tiledlevel.js"></script>
+	<script src="main.js"></script>
+	<script>
+		$().ready(function() {
+			Crafty.init(500, 500);
+			
+			var player = Crafty.c("Player", {
+				player: function(image) {
+					this.image(image);
+				},
+				init: function() {
+					this.requires("2D, DOM, Multiway, Image");
+					
+					// Initialize sub-components.
+					this.multiway(3, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180});
+					
+					// Make this chainable.
+					return this;
+				}
+			});
+			
+			var map = Crafty.e("2D, DOM, TiledLevel")
+				.tiledLevel("data/test-map.json", "DOM");
+		});
+	</script>
+</head>
+<body>
+
+</body>
+</html>
