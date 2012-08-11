@@ -5,12 +5,12 @@
 		
 		/** 
 		 * Create tile components to be added to tile entities via makeLayer().
+		 * New components are created for each tile in a tileset.
 		 * @param ts The tilesets that this map contains.
 		 * @param drawType The rendering engine that Crafty should draw the map with.
 		 * @return Void
 		 */
 		makeTiles : function (ts, drawType) {
-			
 			var components,
 			i,
 			posx,
@@ -38,6 +38,7 @@
 			xCount = tsWidth / tWidth | 0;
 			yCount = tsHeight / tHeight | 0;
 			sMap = {};
+			
 			for (i = 0, _ref = yCount * xCount; i < _ref; i += 1) {
 				posx = i % xCount;
 				posy = i / xCount | 0;
@@ -55,9 +56,14 @@
 					}
 				}
 				
-				// TODO: This works but...goddamn is it ugly.
+				// Add components based on tile properties.
+				/*
+				 * NOTE: Since components are created for every tile in a
+				 * tileset, care should be taken not to have blank/unused
+				 * space in a given tileset.  That way, we're not creating
+				 * a ton of components that never get used.
+				 */
 				try{
-					
 					// Account for collision.
 					if(tsProperties[i].type == "solid") {
 						components += ", Collidable";
@@ -119,8 +125,11 @@
 						// Create a component using the object's type property.
 						var obj = Crafty.e(tDatum.type);
 						
-						// Call initializer function.
-						// NOTE: Expected to be an all lowercase version of the component name.
+						// Call initializer function and include the entity's
+						// image as a parameter so we can display the entity.
+						// 
+						// NOTE: The initializer is expected to be an all 
+						// lowercase version of the component name.
 						obj[tDatum.type.toLowerCase()](tilesets[tDatum.properties.image].image);
 						
 						// Position that stuff!
