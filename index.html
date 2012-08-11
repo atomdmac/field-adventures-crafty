@@ -15,10 +15,17 @@
 					this.image(image);
 				},
 				init: function() {
-					this.requires("2D, DOM, Multiway, Image");
+					this.requires("2D, DOM, Multiway, Image, Collision");
 					
 					// Initialize sub-components.
 					this.multiway(3, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180});
+					
+					// Listen for collisions.
+					this.bind('Moved', function(from) {
+						if(this.hit('Collidable')){
+							this.attr({x: from.x, y:from.y});
+						}
+					});
 					
 					// Make this chainable.
 					return this;
@@ -27,6 +34,7 @@
 			
 			var map = Crafty.e("2D, DOM, TiledLevel")
 				.tiledLevel("data/test-map.json", "DOM");
+				
 		});
 	</script>
 </head>

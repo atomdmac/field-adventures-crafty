@@ -3,7 +3,14 @@
 		// An array of tileset objects imported from the map.
 		tilesets: null,
 		
+		/** 
+		 * Create tile components to be added to tile entities via makeLayer().
+		 * @param ts The tilesets that this map contains.
+		 * @param drawType The rendering engine that Crafty should draw the map with.
+		 * @return Void
+		 */
 		makeTiles : function (ts, drawType) {
+			
 			var components,
 			i,
 			posx,
@@ -38,6 +45,8 @@
 				tName = "tile" + tNum;
 				sMap[sName] = [posx, posy];
 				components = "2D, " + drawType + ", " + sName + ", MapTile";
+				
+				// TODO: Figure out what's going on here... using tNum as an index for tsProperties doesn't really work since it's a GID.
 				if (tsProperties) {
 					if (tsProperties[tNum - 1]) {
 						if (tsProperties[tNum - 1]["components"]) {
@@ -45,6 +54,18 @@
 						}
 					}
 				}
+				
+				// TODO: This works but...goddamn is it ugly.
+				try{
+					
+					// Account for collision.
+					if(tsProperties[i].type == "solid") {
+						components += ", Collidable";
+					}
+				} catch(e) {
+					/* Empty */ 
+				};
+				
 				Crafty.c(tName, {
 					comp : components,
 					init : function () {
@@ -54,11 +75,18 @@
 				});
 				tNum++;
 			}
-			console.log("Making a new component for ", tsImage);
 			
 			Crafty.sprite(tWidth, tHeight, tsImage, sMap);
 			return null;
 		},
+		
+		/**
+		 * Renders a layer by applying the tile components created in
+		 * makeTiles() to new entities.
+		 * @param layer An Object describing the layer to be created.
+		 * @param tilesets An Array of the tilesets that this map contains.
+		 * @return Void
+		 */
 		makeLayer : function (layer, tilesets) {
 			var i,
 			lData,
@@ -103,6 +131,13 @@
 			}
 			return null;
 		},
+		
+		/**
+		 * Load the map at the specified URL.
+		 * @param levelURL A String that describes the URL to load the map from.
+		 * @param drawType A String that describes which rendering engine to use.
+		 * @return Void
+		 */
 		tiledLevel : function (levelURL, drawType) {
 			var _this = this;
 			$.ajax({
@@ -160,7 +195,14 @@
 			});
 			return this;
 		},
+		
 		init : function () {
+			// Create "Collidable" component.
+			Crafty.c("Collidable", {
+				init: function() {
+					// EMPTY.
+				}
+			});
 			return this;
 		}
 	});
