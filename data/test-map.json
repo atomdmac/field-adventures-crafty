@@ -97,6 +97,7 @@
             {
              "0":
                 {
+				 "components": "Solid",
                  "type":"solid"
                 },
              "1":
@@ -105,24 +106,28 @@
                 },
              "2":
                 {
+				 "components": "NWSlant",
                  "isSlant":"true",
                  "slantType":"nw",
                  "type":"solid"
                 },
              "3":
                 {
+				 "components": "NESlant",
                  "isSlant":"true",
                  "slantType":"ne",
                  "type":"solid"
                 },
              "4":
                 {
+				 "components": "SESlant",
                  "isSlant":"true",
                  "slantType":"se",
                  "type":"solid"
                 },
              "5":
                 {
+				 "components": "SWSlant",
                  "isSlant":"true",
                  "slantType":"sw",
                  "type":"solid"

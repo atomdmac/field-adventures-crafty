@@ -1,5 +1,6 @@
 (function () {
 	Crafty.c("TiledLevel", {
+		
 		// An array of tileset objects imported from the map.
 		tilesets: null,
 		
@@ -11,6 +12,7 @@
 		 * @return Void
 		 */
 		makeTiles : function (ts, drawType) {
+			
 			var components,
 			i,
 			posx,
@@ -47,30 +49,16 @@
 				sMap[sName] = [posx, posy];
 				components = "2D, " + drawType + ", " + sName + ", MapTile";
 				
-				// TODO: Figure out what's going on here... using tNum as an index for tsProperties doesn't really work since it's a GID.
+				// Add any components listed in the tileset tile's "components"
+				// property.  NOTE: This should be a comma-delimited list.
 				if (tsProperties) {
-					if (tsProperties[tNum - 1]) {
-						if (tsProperties[tNum - 1]["components"]) {
-							components += ", " + tsProperties[tNum - 1]["components"];
+					var index = String(Number(tNum - 1));
+					if (tsProperties[i]) {
+						if (tsProperties[i]["components"]) {
+							components += ", " + tsProperties[i]["components"];
 						}
 					}
 				}
-				
-				// Add components based on tile properties.
-				/*
-				 * NOTE: Since components are created for every tile in a
-				 * tileset, care should be taken not to have blank/unused
-				 * space in a given tileset.  That way, we're not creating
-				 * a ton of components that never get used.
-				 */
-				try{
-					// Account for collision.
-					if(tsProperties[i].type == "solid") {
-						components += ", Collidable";
-					}
-				} catch(e) {
-					/* Empty */ 
-				};
 				
 				Crafty.c(tName, {
 					comp : components,
@@ -206,10 +194,38 @@
 		},
 		
 		init : function () {
-			// Create "Collidable" component.
-			Crafty.c("Collidable", {
+			Crafty.c("Solid", {
 				init: function() {
-					// EMPTY.
+					this.requires("Collision");
+					this.collision([0,0], [32,0], [32,32], [0,32]);
+				}
+			});
+			Crafty.c("NWSlant", {
+				init: function() {
+					this.requires("Collision");
+					var hitArea = new Crafty.polygon([[0, 32], [32, 0], [32, 32]]);
+					this.collision([0, 32], [32, 0], [32, 32]);
+				}
+			});
+			Crafty.c("NESlant", {
+				init: function() {
+					this.requires("Collision");
+					var hitArea = new Crafty.polygon([[0, 0], [32, 32], [0, 32]]);
+					this.collision([0, 0], [32, 32], [0, 32]);
+				}
+			});
+			Crafty.c("SWSlant", {
+				init: function() {
+					this.requires("Collision");
+					var hitArea = new Crafty.polygon([[0,0], [32,0], [32,32]]);
+					this.collision([0,0], [32,0], [32,32]);
+				}
+			});
+			Crafty.c("SESlant", {
+				init: function() {
+					this.requires("Collision");
+					var hitArea = new Crafty.polygon([[0,0], [32,0], [0,32]]);
+					this.collision([0,0], [32,0], [0,32]);
 				}
 			});
 			return this;
