@@ -7,40 +7,32 @@
   <image source="tilesets/metatiles_32x32.png" width="256" height="32"/>
   <tile id="0">
    <properties>
-    <property name="type" value="solid"/>
+    <property name="components" value="Solid"/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
-    <property name="type" value="ladder"/>
+    <property name="components" value="Ladder"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="isSlant" value="true"/>
-    <property name="slantType" value="nw"/>
-    <property name="type" value="solid"/>
+    <property name="components" value="NWSlant"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="isSlant" value="true"/>
-    <property name="slantType" value="ne"/>
-    <property name="type" value="solid"/>
+    <property name="components" value="NESlant"/>
    </properties>
   </tile>
   <tile id="4">
    <properties>
-    <property name="isSlant" value="true"/>
-    <property name="slantType" value="se"/>
-    <property name="type" value="solid"/>
+    <property name="components" value="SESlant"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="isSlant" value="true"/>
-    <property name="slantType" value="sw"/>
-    <property name="type" value="solid"/>
+    <property name="components" value="SWSlant"/>
    </properties>
   </tile>
  </tileset>
