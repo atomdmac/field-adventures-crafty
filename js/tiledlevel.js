@@ -93,6 +93,9 @@
 			lWidth = layer.width,
 			lHeight = layer.height;
 			
+			// Are we dealing with a collision layer?
+			var isCol = layer.name.toLowerCase().indexOf("collision") >= 0;
+			
 			// Create a tile layer.
 			if(layer.type == "tilelayer") {
 				for (i = 0, _len = lData.length; i < _len; i++) {
@@ -101,6 +104,9 @@
 						tile = Crafty.e("tile" + tDatum);
 						tile.x = (i % lWidth) * tile.w;
 						tile.y = (i / lWidth | 0) * tile.h;
+						
+						// Hide tile if this is a collision layer.
+						if(isCol) tile.visible = false;
 					}
 				}
 			}
@@ -194,6 +200,8 @@
 		},
 		
 		init : function () {
+			// Create collidable components to be used for tiles that are 
+			// impassable.
 			Crafty.c("Solid", {
 				init: function() {
 					this.requires("Collision");
