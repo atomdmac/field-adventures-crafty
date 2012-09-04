@@ -22,7 +22,7 @@ GAME = {
 				this.bind('Moved', function(from) {
 					var col = this.hit("Collision");
 					if(col){
-						console.log(col);
+						// console.log(col);
 						this.attr({x: from.x, y:from.y});
 					}
 				});
@@ -32,50 +32,24 @@ GAME = {
 			}
 		});
 		
-		Crafty.c("TouchControls", {
-			init: function() {
-				
-				var controlDepth = 50;
-			
-				// Get a reference to the stage element.
-				var stage = Crafty.stage.elem;
-				
-				// Create an overlay to catch mouse events.
-				var overlayMarkup = "<div id='touchcontrols-overlay'></div>";
-				this._overlay = $(overlayMarkup).appendTo(stage);
-				this._overlay.css({
-					"position": "absolute",
-					"width": Crafty.viewport.width + 100,
-					"height": Crafty.viewport.height,
-					"z-index": 2
-				});
-				
-				// Listen for mouse events.
-				// TODO: Add listeners for all event types.
-				this._overlay.click(function(e){
-					Crafty.trigger("GlobalClick", e);
-				});
-				this._overlay.mousedown(function(e){
-					Crafty.trigger("GlobalMouseDown", e);
-				});
-				
-				// Function to convert taps to keyboard keys.
-				function tap2key(x, y) {
-					
-					// Shortcut to the viewport object.
-					var v = Crafty.viewport;
-				
-					// Left edge.
-					if(x > 0 && x < controlDepth) return {key: "A"};
-					
-					// Right edge
-					if (x > (v.width - controlDepth)) && x < 
-					// Top edge.
-					
-					// Bottom edge.
-				}
-			},
-		});
+		var renderType = 'DOM';
+		
+		var stick = Crafty.e("2D, "+renderType+", Image").attr({
+			x: 25,
+			y: 25,
+			w: 50,
+			h: 50,
+			z: 2              
+		}).image("data/joystick/stick.png");
+
+		var track = Crafty.e("2D, "+renderType+", Image, Joystick, Text").attr({
+			x: 0,
+			y: 0,
+			w: 200,
+			h: 200,
+			z: 1
+		}).image("data/joystick/track.png")
+		.joystick(stick,{mouseSupport: true, range: 20 });
 		
 		// Create and load the map.
 		this.currentMap = Crafty.e("2D, DOM, TiledLevel")
